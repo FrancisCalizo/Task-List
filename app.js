@@ -5,30 +5,52 @@ const clearTasks = document.querySelector('.clear-tasks');
 const taskList = document.querySelector('.collection');
 const filterTasks = document.getElementById('filter');
 
+// Add New Task
 taskForm.addEventListener('submit', e => {
   if (taskInput.value === '') {
     alert('Please enter a Task');
   } else {
-    // Create li Element
+    // Create New Task Element
     const li = document.createElement('li');
-    // Assign class
     li.classList.add('collection-item');
-    // Add Text to li
     li.innerText = taskInput.value;
-    // Create New Link to Delete
     const link = document.createElement('a');
-    // Add Class
-    link.classList.add = 'delete-item secondary-content';
-    // Add icon HTML
+    link.className = 'delete-item secondary-content';
     link.innerHTML = '<i class="fa fa-remove"></i>';
-    // Append link to li
     li.appendChild(link);
-    // Append to ul
     taskList.appendChild(li);
-    // Clear New Task Text
+
+    // Clear Input After Adding Task
     taskInput.value = '';
   }
 
   // Prevents the Form Submit From Redirecting
   e.preventDefault();
+});
+
+// Delete Particular Single Task
+taskList.addEventListener('click', function(e) {
+  const li = e.target.parentElement.parentElement;
+
+  if (li.className == 'collection-item') {
+    if (confirm('Are you sure you want to delete this task?')) {
+      li.remove();
+    }
+  }
+});
+
+// Clear All Tasks
+clearTasks.addEventListener('click', e => {
+  // If You Move This Line Outside, This code Does Not Work
+  // This is because on the event, it is redefining the variable
+  const tasks = document.querySelectorAll('.collection-item');
+  tasks.forEach(li => li.remove());
+});
+
+// Filter Through Tasks
+filterTasks.addEventListener('keyup', e => {
+  const filterWord = filterTasks.value;
+  const tasks = document.querySelectorAll('.collection-item');
+
+  tasks.forEach(task => console.log(task.innerText));
 });
